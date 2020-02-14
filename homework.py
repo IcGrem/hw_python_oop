@@ -12,20 +12,13 @@ class Calculator:
     def get_today_stats(self):
         total = 0
         now = dt.datetime.now().date()
-        for record in self.records:
-            if record.date == now:
-                total += record.amount
-        return total
+        return sum ([total + record.amount for record in self.records if record.date == now])
 
     def get_week_stats(self):
         total = 0 
         now = dt.datetime.now().date()
         last_seven = now - dt.timedelta(days=7)
-        for record in self.records:
-            moment = record.date
-            if now >= moment >= last_seven:
-                total += record.amount
-        return total
+        return sum ([total + record.amount for record in self.records if now >= record.date >= last_seven])
 
 class Record:
     def __init__(self, amount, comment, date = ''):
