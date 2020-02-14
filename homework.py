@@ -1,6 +1,5 @@
 import datetime as dt
 
-
 class Calculator:
     pass
 
