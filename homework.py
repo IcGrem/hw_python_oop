@@ -34,17 +34,20 @@ class CashCalculator(Calculator):
     def get_today_cash_remained(self, currency='rub'):
         total = super().get_today_stats()
         curr_limit = self.limit
-        curr_dict = { 'rub': ['руб', 1, self.RUB_RATE], 'usd': ['USD', 2, self.USD_RATE], 'eur': ['Euro', 2, self.EURO_RATE]}
-        for curr in curr_dict.keys():
+        curr_dct = { 'rub': ('руб', 1, self.RUB_RATE), 'usd': ('USD', 2, self.USD_RATE), 'eur': ('Euro', 2, self.EURO_RATE)}
+        for curr in curr_dct:
             if currency == curr:
-                total /= curr_dict[curr][2]
-                curr_limit /= curr_dict[curr][2]
+                curr_name, curr_round, curr_rate = curr_dct[curr]
+                total /= curr_rate
+                curr_limit /= curr_rate
                 if curr_limit > total:
-                    return f'На сегодня осталось {round(curr_limit - total, curr_dict[curr][1])} {curr_dict[curr][0]}'
+                    bill = round(curr_limit - total, curr_round)
+                    return f'На сегодня осталось {bill} {curr_name}'
                 elif curr_limit == total:
                     return f'Денег нет, держись'
                 else:
-                    return f'Денег нет, держись: твой долг - {round(total - curr_limit, curr_dict[curr][1])} {curr_dict[curr][0]}'
+                    debt = round(total - curr_limit, curr_round)
+                    return f'Денег нет, держись: твой долг - {debt} {curr_name}'
 
 class CaloriesCalculator(Calculator):
     def get_calories_remained(self):
@@ -52,4 +55,4 @@ class CaloriesCalculator(Calculator):
         day_limit = self.limit - total
         if day_limit > 0 :
             return f'Сегодня можно съесть что-нибудь ещё, но с общей калорийностью не более {day_limit} кКал'
-            return 'Хватит есть!'
+        return 'Хватит есть!'
