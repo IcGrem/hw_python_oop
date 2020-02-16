@@ -35,19 +35,18 @@ class CashCalculator(Calculator):
         total = super().get_today_stats()
         curr_limit = self.limit
         curr_dct = { 'rub': ('руб', 1, self.RUB_RATE), 'usd': ('USD', 2, self.USD_RATE), 'eur': ('Euro', 2, self.EURO_RATE)}
-        for curr in curr_dct:
-            if currency == curr:
-                curr_name, curr_round, curr_rate = curr_dct[curr]
-                total /= curr_rate
-                curr_limit /= curr_rate
-                if curr_limit > total:
-                    bill = round(curr_limit - total, curr_round)
-                    return f'На сегодня осталось {bill} {curr_name}'
-                elif curr_limit == total:
-                    return f'Денег нет, держись'
-                else:
-                    debt = round(total - curr_limit, curr_round)
-                    return f'Денег нет, держись: твой долг - {debt} {curr_name}'
+        if currency in curr_dct:
+            curr_name, curr_round, curr_rate = curr_dct[currency]
+            total /= curr_rate
+            curr_limit /= curr_rate
+            if curr_limit > total:
+                bill = round(curr_limit - total, curr_round)
+                return f'На сегодня осталось {bill} {curr_name}'
+            elif curr_limit == total:
+                return f'Денег нет, держись'
+            else:
+                debt = round(total - curr_limit, curr_round)
+                return f'Денег нет, держись: твой долг - {debt} {curr_name}'
 
 class CaloriesCalculator(Calculator):
     def get_calories_remained(self):
