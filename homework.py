@@ -9,12 +9,10 @@ class Calculator:
         self.records.append(record)
 
     def get_today_stats(self):
-        total = 0
         now = dt.datetime.now().date()
         return sum([record.amount for record in self.records if record.date == now])
 
     def get_week_stats(self):
-        total = 0 
         now = dt.datetime.now().date()
         last_seven = now - dt.timedelta(days=7)
         return sum([record.amount for record in self.records if now >= record.date >= last_seven])
@@ -54,5 +52,4 @@ class CaloriesCalculator(Calculator):
         day_limit = self.limit - total
         if day_limit > 0 :
             return f'Сегодня можно съесть что-нибудь ещё, но с общей калорийностью не более {day_limit} кКал'
-        else:
             return 'Хватит есть!'
